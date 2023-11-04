@@ -43,7 +43,7 @@ pip install -r requirements.txt
 
  - The `main.py` file contains code for fine-tuning FDR and training our framework 'TFS'.
 
- - The `testing.py` file is used for testing FDR and TFS,
+ - The `testing.py` file is used for testing FDR and TFS.
 
 Please run first
 ```sh
