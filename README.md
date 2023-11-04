@@ -10,7 +10,7 @@ This paper introduces the framework "The Fairness Stitch (TFS)" to enhance fairn
 
 
 ## Datasets
-The CelebA and UTKFace datasets used our experiments. 
+The CelebA and UTKFace datasets used in our experiments. 
 
 [CelebA dataset](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html): It is a collection of celebrity faces, comprising more than 200,000 images annotated with 40 distinct attributes, including facial landmarks, gender, age, hair color, glasses, etc. 
 
