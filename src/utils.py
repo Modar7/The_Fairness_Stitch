@@ -29,14 +29,12 @@ def get_pred(x, model, TEST_BS):  # Avoid exceeding the memory limit  get_pred(x
 
 
 
-def get_pred_Stitched_Model(x, Stitched_Model, TEST_BS):  # Avoid exceeding the memory limit
+def get_pred_Stitched_Model(x, Stitched_Model, TEST_BS): 
     dataset = TensorDataset(x)
     loader = torch.utils.data.DataLoader(dataset, batch_size=TEST_BS, shuffle=False)
     outs = []
     for x in loader:
-        #out = F.softmax(model.resnet18.fc[0](x[0]).to(device), dim=1).cpu().detach().numpy()   # model.out_fc(x[0]).to(device)
         out = F.softmax(Stitched_Model(x[0].to(device)), dim=1).cpu().detach().numpy()
-        #out = F.softmax(model.out_fc(x[0]).to(device), dim=1).cpu().detach().numpy()   # model.out_fc(x[0]).to(device)
         outs.append(out)
     outs = np.concatenate(outs)
     pred = np.argmax(outs, 1)
@@ -54,7 +52,7 @@ def print_fpr_fnr_sensitive_features(y_true, y_pred, x_control, sensitive_attrs)
             fpr = false_positive_rate(y_true_local, y_pred_local)
             fnr = false_negative_rate(y_true_local, y_pred_local)
 
-            if isinstance(s_val, float):  # print the int value of the sensitive attr val
+            if isinstance(s_val, float):  
                 s_val = int(s_val)
             print("||  %s  || %0.2f || %0.2f ||" % (s_val, fpr, fnr))
 

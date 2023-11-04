@@ -34,9 +34,6 @@ def ae_constraint(criterion, log_softmax, y, a):
 
 
 def mmf_constraint(criterion, log_softmax, y, a):
-    # loss_p = criterion(log_softmax[a == 1], y[a == 1])
-    # loss_n = criterion(log_softmax[a == 0], y[a == 0])
-    # return torch.max(loss_p, loss_n)
     y_p_a = y + a
     y_m_a = y - a
     if len(y[y_p_a == 2]) > 0:

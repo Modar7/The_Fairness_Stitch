@@ -36,12 +36,6 @@ from fairlearn.metrics import (
 from sklearn.metrics import balanced_accuracy_score, roc_auc_score
 from .utils import print_acc_auc_stats
 
-#from utils import *
-#from models import MyResNet, ConvNet
-
-#from .data_processing import prepare_data
-#from src.data_processing import prepare_data
-#from models import MyResNet
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -52,13 +46,9 @@ def train_per_epoch(model, optimizer, criterion, epoch, num_epochs, trainloader,
     epoch_acc = 0.0
 
     for batch_idx, (images, labels) in enumerate(trainloader):
-        # zero the parameter gradients
         optimizer.zero_grad()
 
-        # move to GPU
         images, labels = images.to(device), labels[:, 9].to(device)
-
-        # forward
         outputs = model.forward(images)
 
         loss = criterion(outputs, labels)
@@ -83,10 +73,7 @@ def valid_per_epoch(model, epoch, num_epochs, criterion, valloader, valid_datase
     epoch_acc = 0.0
 
     for batch_idx, (images, labels) in enumerate(valloader):
-        # move to GPU
         images, labels = images.to(device), labels[:, 9].to(device)
-
-        # forward
         outputs = model.forward(images)
 
         loss = criterion(outputs, labels)
@@ -260,11 +247,6 @@ def Finetune(model, criterion, trainloader, valloader, testloader, prepare_data,
     #print('-----------------------------------------------------------------------------------------------')
     #print('-----------------------------------------------------------------------------------------------')
     if valid_BACC > 0.86 and valid_auc > 0.93 and valid_eod < 0.12:
-        #print('There is a good performance-fairness trade-off')
-        #print("Valid AUC: %0.3f" % (valid_auc))
-        #print(f'Valid eod: {valid_eod}')
-        #print(f'Valid BACC: {valid_BACC}')
-        #print('epoch:', epoch)
         state = {
         'epoch': epoch,
         'state_dict': model.state_dict(),
@@ -273,8 +255,6 @@ def Finetune(model, criterion, trainloader, valloader, testloader, prepare_data,
         savepath=f'checkpoint_trained_FDR_model_Epochs{epoch}_CelebA_valid.t7'
         torch.save(state,savepath)
         args.valid_output_xlsx_info = args.valid_output_xlsx_info.append({'valid eod': valid_eod, 'valid BACC': valid_BACC, 'valid auc': valid_auc, 'epoch': epoch, 'savepath': savepath}, ignore_index=True)
-    #else:
-      #  print('There is no good performance-fairness trade-off')
     print('-----------------------------------------------------------------------------------------------')
     print('-----------------------------------------------------------------------------------------------')
     args.valid_output_xlsx_info.to_excel('output_FDR_CelebA.xlsx', index=False)

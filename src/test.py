@@ -24,15 +24,11 @@ def Testing_fun(Trained_TFS, Finetuned_FDR, model, TEST_BS,
     x_finetune, y_finetune, a_finetune = x_valid, y_valid, a_valid
     
 
-    #x_train, y_train, a_train = torch.load('x_train512_dataset-files'), torch.load('y_train512_dataset-files'), torch.load('a_train512_dataset-files')
-    #x_test, y_test, a_test = torch.load('x_test512_dataset-files'), torch.load('y_test512_dataset-files'), torch.load('a_test512_dataset-files')
-    #x_finetune, y_finetune, a_finetune = x_train, y_train, a_train 
-    #torch.load('x_finetune512_dataset-files'), torch.load('y_finetune512_dataset-files'), torch.load('a_finetune512_dataset-files')
+
     x_train, y_train, a_train = torch.load('datasets/x_train_CelebA_dataset-files'), torch.load('datasets/y_train_CelebA_dataset-files'), torch.load('datasets/a_train_CelebA_dataset-files')
     x_test, y_test, a_test = torch.load('datasets/x_test_CelebA_dataset-files'), torch.load('datasets/y_test_CelebA_dataset-files'), torch.load('datasets/a_test_CelebA_dataset-files')
     x_valid, y_valid, a_valid = torch.load('datasets/x_valid_CelebA_dataset-files'), torch.load('datasets/y_valid_CelebA_dataset-files'), torch.load('datasets/a_valid_CelebA_dataset-files')
-    #x_balanced, y_balanced, a_balanced = torch.load('datasets/x_balanced_CelebA_dataset-files'), torch.load('datasets/y_balanced_CelebA_dataset-files'), torch.load('datasets/a_balanced_CelebA_dataset-files')
-    #x_finetune, y_finetune, a_finetune = x_balanced, y_balanced, a_balanced 
+  
 
     Trained_TFS.eval()
 
@@ -40,9 +36,7 @@ def Testing_fun(Trained_TFS, Finetuned_FDR, model, TEST_BS,
     # Test TFS #
     ############
     out_train, pred_train = get_pred_Stitched_Model(x_train.to(device), Trained_TFS, TEST_BS)
-    #out_valid, pred_valid = get_pred_Stitched_Model(x_valid.to(device), Trained_TFS, TEST_BS)
     out_finetune, pred_finetune = get_pred_Stitched_Model(x_finetune.to(device), Trained_TFS, TEST_BS)
-    #out_balanced, pred_balanced = get_pred_Stitched_Model(x_balanced.to(device), Trained_TFS, TEST_BS)
     out_test, pred_test = get_pred_Stitched_Model(x_test.to(device), Trained_TFS, TEST_BS)
 
 
@@ -64,11 +58,8 @@ def Testing_fun(Trained_TFS, Finetuned_FDR, model, TEST_BS,
     result_x = pd.concat([df_true_label, df_pred_proba, df_protected_attribute], axis=1)
     protected_attribute = 'sex'
     majority_group_name = "Male"
-    minority_group_name = "Female"
-    #Get index    
+    minority_group_name = "Female"   
     feature = result_x.keys().tolist()    
-    #sa_index = feature.index(protected_attribute)
-    #p_Group = 0 
     filename = "compas.recid.abroca_SL_LS.pdf"
     #Compute Abroca
     slice = compute_abroca(result_x, pred_col = 'pred_proba' , label_col = 'true_label', protected_attr_col = protected_attribute,
@@ -98,14 +89,8 @@ def Testing_fun(Trained_TFS, Finetuned_FDR, model, TEST_BS,
     df_pred_proba = pd.DataFrame(out_test22[:, 0].astype(np.float32), columns = ['pred_proba'])
     df_true_label = pd.DataFrame(y_test, columns = ['true_label'])
     df_protected_attribute = pd.DataFrame(a_test['gender'], columns = ['sex'])
-    #protected_attribute = 'sex'
-    result_x = pd.concat([df_true_label, df_pred_proba, df_protected_attribute], axis=1)
-    #majority_group_name = "Male"
-    #minority_group_name = "Female"
-    #Get index    
+    result_x = pd.concat([df_true_label, df_pred_proba, df_protected_attribute], axis=1)   
     feature = result_x.keys().tolist()    
-    #sa_index = feature.index(protected_attribute)
-    #p_Group = 0 
     filename = "compas.recid.abroca_No_SL.pdf"
     #Compute Abroca
     slice = compute_abroca(result_x, pred_col = 'pred_proba' , label_col = 'true_label', protected_attr_col = protected_attribute,

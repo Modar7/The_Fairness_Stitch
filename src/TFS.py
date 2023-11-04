@@ -7,9 +7,7 @@ Original source: [https://github.com/yuzhenmao/Fairness-Finetuning/tree/main]
 
 
 import torch
-#from models import MyResNet
 import torch.nn as nn
-
 import torch.optim as optim
 from tqdm import tqdm
 
@@ -24,9 +22,6 @@ from .utils import get_pred, get_pred_Stitched_Model, print_acc_auc_stats
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-#x_train, y_train, a_train = torch.load('x_train_CelebA_dataset_16384-files'), torch.load('y_train_CelebA_dataset_16384-files'), torch.load('a_train_CelebA_dataset_16384-files')
-#x_test, y_test, a_test = torch.load('x_test_CelebA_dataset_16384-files'), torch.load('y_test_CelebA_dataset_16384-files'), torch.load('a_test_CelebA_dataset_16384-files')
-#x_finetune, y_finetune, a_finetune = torch.load('x_valid_CelebA_dataset_16384-files'), torch.load('y_valid_CelebA_dataset_16384-files'), torch.load('a_valid_CelebA_dataset_16384-files')
 
 
 def Training_Stitched_Model(Stitched_Model, model, optimizer, criterion, 
@@ -100,9 +95,8 @@ def Training_Stitched_Model(Stitched_Model, model, optimizer, criterion,
         for batch_idx, (x, y, a) in enumerate(balancedloader):
             x, y, a = x.to(device), y.to(device), a.to(device)
             optimizer.zero_grad()
-            outputs = Stitched_Model(x) # modified_net6(x)
+            outputs = Stitched_Model(x) 
             log_softmax, softmax = F.log_softmax(outputs, dim=1), F.softmax(outputs, dim=1)
-            #if args.method == 'M1' or args.method == 'M2':  # Use the fairness constraint
             if args.constraint == 'MMF':
                 loss = mmf_constraint(criterion, log_softmax, y, a)
             else:
@@ -124,8 +118,7 @@ def Training_Stitched_Model(Stitched_Model, model, optimizer, criterion,
     
             _, preds = torch.max(outputs.data, 1)
             epoch_acc += torch.sum(preds == y).item()
-    
-        # scheduler.step()
+
     
         epoch_loss /= len(balancedloader)
         epoch_loss_fairness /= len(balancedloader)
@@ -170,11 +163,6 @@ def Training_Stitched_Model(Stitched_Model, model, optimizer, criterion,
         #print('-----------------------------------------------------------------------------------------------')
         #print('-----------------------------------------------------------------------------------------------')
         if valid_BACC > 0.86 and valid_auc > 0.93 and valid_eod < 0.12:
-            #print('There is a good performance-fairness trade-off')
-            #print("Valid AUC: %0.3f" % (valid_auc))
-            #print(f'Valid eod: {valid_eod}')
-            #print(f'Valid BACC: {valid_BACC}')
-            #print('epoch:', epoch)
             state = {
             'epoch': epoch,
             'state_dict': Stitched_Model.state_dict(),
@@ -183,8 +171,6 @@ def Training_Stitched_Model(Stitched_Model, model, optimizer, criterion,
             savepath=f'checkpoint_trained_FDR_model_Epochs{epoch}_CelebA_valid.t7'
             torch.save(state,savepath)
             args.valid_output_xlsx_info = args.valid_output_xlsx_info.append({'valid eod': valid_eod, 'valid BACC': valid_BACC, 'valid auc': valid_auc, 'epoch': epoch, 'savepath': savepath}, ignore_index=True)
-        #else:
-          #  print('There is no good performance-fairness trade-off')
         print('-----------------------------------------------------------------------------------------------')
         print('-----------------------------------------------------------------------------------------------')
     args.valid_output_xlsx_info.to_excel('output_TFS_CelebA.xlsx', index=False)

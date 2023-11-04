@@ -71,7 +71,6 @@ x_train, y_train, a_train = torch.load('datasets/x_train_CelebA_dataset-files'),
 x_test, y_test, a_test = torch.load('datasets/x_test_CelebA_dataset-files'), torch.load('datasets/y_test_CelebA_dataset-files'), torch.load('datasets/a_test_CelebA_dataset-files')
 x_valid, y_valid, a_valid = torch.load('datasets/x_valid_CelebA_dataset-files'), torch.load('datasets/y_valid_CelebA_dataset-files'), torch.load('datasets/a_valid_CelebA_dataset-files')
 x_balanced, y_balanced, a_balanced = torch.load('datasets/x_balanced_CelebA_dataset-files'), torch.load('datasets/y_balanced_CelebA_dataset-files'), torch.load('datasets/a_balanced_CelebA_dataset-files')
-#x_finetune, y_finetune, a_finetune = x_balanced, y_balanced, a_balanced 
 
 
 # load the trained MyResNet model #
