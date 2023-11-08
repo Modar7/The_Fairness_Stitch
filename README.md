@@ -2,7 +2,7 @@
 
 
 # THE FAIRNESS STITCH: Unveiling the Potential of Model Stitching in Neural Network De-Biasing
-Implementation of the paper "THE FAIRNESS STITCH: Unveiling the Potential of Model Stitching in Neural Network De-Biasing", by Modar Sulaiman and Kallol Roy.
+Implementation of the paper "[THE FAIRNESS STITCH: Unveiling the Potential of Model Stitching in Neural Network De-Biasing](https://arxiv.org/abs/2311.03532)", by Modar Sulaiman and Kallol Roy.
 
 This paper introduces the framework "The Fairness Stitch (TFS)" to enhance fairness in deep learning models. It combines model stitching and training using with fairness constraints. 
 
