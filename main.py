@@ -58,9 +58,9 @@ train_dataset = datasets.CelebA(data_root, split="train", target_type=["attr"], 
 valid_dataset = datasets.CelebA(data_root, split="valid", target_type=["attr"], transform=transform)
 test_dataset =  datasets.CelebA(data_root, split="test", target_type=["attr"], transform=transform)
 
-train_subset = Subset(train_dataset, np.arange(1, 26))
-valid_subset = Subset(valid_dataset, np.arange(1, 26))
-test_subset = Subset(test_dataset, np.arange(1, 26))
+train_subset = train_dataset 
+valid_subset = valid_dataset
+test_subset = test_dataset 
 TRAIN_BS = 1024
 TEST_BS = 2048
 trainloader = torch.utils.data.DataLoader(train_subset, batch_size=TRAIN_BS,
